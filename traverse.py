@@ -5,6 +5,9 @@ import sys
 import matplotlib.pyplot as plt
 from collections import deque
 import re
+from multiprocessing.pool import Pool
+from multiprocessing import Manager, JoinableQueue
+
 
 # Takes a path and a pattern and returns the number of
 # files matching the pattern and a list of subdirs
@@ -33,6 +36,18 @@ def traverse_directory(root_dir, pattern):
             directory_queue.append(os.path.join(path,d))
     return res
 
+# Asynchronouse worker function for threaded pool
+# Must init res: Manager.dir(), dir_queue: JoinableQueue()
+# and pattern: str globally before calling
+def async_traverse():
+    while True:
+        path = dir_queue.get()
+        count, dirs = search_directory(path,pattern)
+        res[path] = count
+        for d in dirs:
+            dir_queue.put(os.path.join(path,d))
+        dir_queue.task_done()
+
 def plot_result(res):
     x = range(len(res))
     plt.bar(x, list(res.values()), align='center')
@@ -44,6 +59,20 @@ def plot_result(res):
     plt.close()
 
 if __name__ == "__main__":
+
+    threads = 1
+
+    # Search if -t flag specified
+    tflag = filter(lambda arg: arg.startswith('-t'), sys.argv)
+    if tflag:
+        sys.argv.remove(tflag[0])
+        try:
+            # Set number of threads according to specifer, e.g. 4 for '-t4'
+            threads = int(tflag[0].split('-t')[1])
+        except:
+            sys.exit("Invalid -t flag specifier, specify flag with number of threads e.g. -t4")
+
+
     if len(sys.argv) != 3:
         sys.exit("Require 2 input arguments: <root_dir> <keyword>")
 
@@ -58,6 +87,24 @@ if __name__ == "__main__":
     if not os.path.isdir(root_dir):
         sys.exit("Specified root_dir is not a directory or does not exist!")
 
-    res = traverse_directory(root_dir, pattern)
+    if threads == 1:
+        res = traverse_directory(root_dir, pattern)
+    else: # Process multi-threaded
+        # Manager dict handles concurrent write has no race condition
+        # when using multithread processing
+        res = Manager().dict()
+
+        # Queue handle allocating tasks for async threads
+        dir_queue = JoinableQueue()
+        dir_queue.put(root_dir)
+
+        # Init number of threads
+        pool = Pool(threads)
+        for _ in range(threads):
+            pool.apply_async(async_traverse)
+
+        # Wait for queue to empty
+        dir_queue.join()
+
     print res
     plot_result(res)
