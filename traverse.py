@@ -47,8 +47,14 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         sys.exit("Require 2 input arguments: <root_dir> <keyword>")
 
-    root_dir = sys.argv[1]
     pattern = sys.argv[2]
+    try:
+        re.compile(pattern)
+    except:
+        sys.exit("Invalid regex pattern")
+
+    root_dir = sys.argv[1]
+
     res = traverse_directory(root_dir, pattern)
     print res
     plot_result(res)
