@@ -12,7 +12,7 @@ pip install matplotlib regex
 
 To run, execute the script specifying arguments in the format:
 ```
-./traverse.py <dir_path> <keyword>
+./traverse.py <dir_path> <keyword> [-tx]
 ```
 
 `keyword` is specified as a regex pattern
