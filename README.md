@@ -42,4 +42,4 @@ Test cases to consider when implementing a test-suite for this routine:
     * Check invalid regex patterns (e.g. '[')
 * Test different directory path formats work – e.g. Unix systems using `path/to/dir` vs Windows `C:\\path\to\dir`
 * Scale test – e.g. testing if large numbers of nested directories or large number of subdirs under root can cause program to crash (e.g. stack overflow in deep recursion).
-
+* Test all the above works the same on multiple threads as on single thread
