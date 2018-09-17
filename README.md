@@ -31,6 +31,7 @@ A bar chart is generated as `filecount.png` visualising the data output.
 Test cases to consider when implementing a test-suite for this routine:
 
 * Basic functional correctness – testing a simple directory structure and asserting the expected output (stdout and graph file generated)
+* Testing empty directory - returns proper count (0) even when given an empty directory
 * Testing different regex patterns – testing different operators (e.g. `?`,`*`,`.`,`{}` etc.) produces correct count with matching and unmatching files
 * Testing correct count – count should only count files and not directories that match the specified pattern
 * Test invalid inputs correctly responds with error:
