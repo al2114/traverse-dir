@@ -45,7 +45,7 @@ def plot_result(res):
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        sys.exit("Require 2 input arguments: <root_dir> <pattern>")
+        sys.exit("Require 2 input arguments: <root_dir> <keyword>")
 
     root_dir = sys.argv[1]
     pattern = sys.argv[2]
