@@ -17,7 +17,7 @@ To run, execute the script specifying arguments in the format:
 
 `keyword` is specified as a regex pattern
 
-An optional `-t` specifier may be provided to traverse on multiple threads (e.g. `-t4` for 4 threads). This can speed up the routine if the directory structure is large to make use of searching in parallel on multiple cores.
+An optional `-t` specifier may be provided to make use of multiple cores when running (e.g. `-t4` for 4 threads). This can speed up the routine if the directory structure is large.
 
 ### Output
 
