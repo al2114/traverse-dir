@@ -44,12 +44,11 @@ def plot_result(res):
     plt.close()
 
 if __name__ == "__main__":
-    if(len(sys.argv) == 3):
-        root_dir = sys.argv[1]
-        pattern = sys.argv[2]
-        res = traverse_directory(root_dir, pattern)
-        print res
-        plot_result(res)
+    if len(sys.argv) != 3:
+        sys.exit("Require 2 input arguments: <root_dir> <pattern>")
 
-    else:
-        print "Require 2 input arguments: <root_dir> <pattern>"
+    root_dir = sys.argv[1]
+    pattern = sys.argv[2]
+    res = traverse_directory(root_dir, pattern)
+    print res
+    plot_result(res)
