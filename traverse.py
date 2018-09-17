@@ -55,6 +55,9 @@ if __name__ == "__main__":
 
     root_dir = sys.argv[1]
 
+    if not os.path.isdir(root_dir):
+        sys.exit("Specified root_dir is not a directory or does not exist!")
+
     res = traverse_directory(root_dir, pattern)
     print res
     plot_result(res)
